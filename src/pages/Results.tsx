@@ -317,16 +317,26 @@ const Results = () => {
             <CardContent>
               {/* All Skin Concerns */}
               <div className="mb-6">
-                <div className="flex flex-wrap gap-3 mb-4">
-                  {analysisData.skin_profile.concerns.map((concern, index) => (
-                    <div key={index} className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
-                      <span className="font-medium text-foreground capitalize">{concern.replace('_', ' ')}</span>
-                      <Badge variant="outline" className="text-xs">
-                        Detected
-                      </Badge>
+                {analysisData.skin_profile.concerns.includes("no visible issues found") ? (
+                  <div className="text-center py-8">
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <span className="text-2xl">✓</span>
                     </div>
-                  ))}
-                </div>
+                    <h3 className="text-xl font-semibold text-green-700 mb-2">Great News!</h3>
+                    <p className="text-green-600">No visible skin issues found. Your skin looks healthy!</p>
+                  </div>
+                ) : (
+                  <div className="flex flex-wrap gap-3 mb-4">
+                    {analysisData.skin_profile.concerns.map((concern, index) => (
+                      <div key={index} className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
+                        <span className="font-medium text-foreground capitalize">{concern.replace('_', ' ')}</span>
+                        <Badge variant="outline" className="text-xs">
+                          Detected
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               
               {/* Priority Concerns */}

@@ -90,20 +90,28 @@ export const analyzeSkinWithOpenAI = async (
 
     // Create the analysis prompt
     const analysisPrompt = `
-You are an expert dermatologist and skincare specialist. Analyze this facial image for comprehensive skin assessment.
+You are an expert dermatologist and skincare specialist.
 
-Provide a detailed skin analysis in the EXACT JSON format specified below. Be thorough and professional in your assessment.
+Your task is to analyze the provided facial image and return a comprehensive skin assessment in the form of a **valid JSON object**.
 
-Analyze for:
-1. Skin type (oily, dry, combination, normal, sensitive)
-2. Visible concerns (acne, pores, pigmentation, wrinkles, redness, etc.)
-3. Skin tone assessment
-4. Estimated age range
-5. Immediate skincare priorities
-6. Personalized routine recommendations
+Your analysis must cover:
+1. Skin type (e.g., oily, dry, combination, normal, sensitive)
+2. Visible concerns (e.g., acne, pores, pigmentation, wrinkles, redness)
+3. Skin tone (e.g., light, medium, dark)
+4. Estimated age range (e.g., 20-30)
+5. Immediate skincare concerns with urgency and treatment
+6. A complete morning and evening skincare routine
 7. Product ingredient preferences and restrictions
+8. Progress tracking plan
 
-IMPORTANT: Return ONLY valid JSON matching this exact structure:
+⚠️ **VERY IMPORTANT RULES**:
+- If NO visible issues are detected, set \`"concerns"\` to \`["no visible issues found"]\`
+- If no immediate concerns, set \`"immediate_concerns"\` to an **empty array** \`[]\`
+- ONLY list concerns that are clearly visible — DO NOT assume or invent problems
+- Be conservative in diagnosis — healthy skin should be recognized as such
+- Ingredient recommendations should be evidence-based and safe
+
+⛔ Do NOT return any explanation, just a valid JSON object in this exact structure:
 
 {
   "analysis_id": "skin_analysis_[random_id]",
