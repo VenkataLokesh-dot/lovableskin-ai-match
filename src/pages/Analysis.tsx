@@ -1,5 +1,5 @@
-import { useState, useRef } from "react";
-import { Camera, Upload, Check, Shield, Sparkles } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Camera, Upload, Check, Shield, Sparkles, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
@@ -9,58 +9,86 @@ const Analysis = () => {
   const [selectedMethod, setSelectedMethod] = useState<"camera" | "upload" | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [showCamera, setShowCamera] = useState(false);
+  const [showCameraModal, setShowCameraModal] = useState(false);
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Start camera and show modal
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        setShowCamera(true);
-      }
+      const stream = await navigator.mediaDevices.getUserMedia({ 
+        video: { 
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          facingMode: 'user'
+        } 
+      });
+      
+      setCameraStream(stream);
+      setShowCameraModal(true);
+      
+      // Wait for modal to render, then set video source
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play().catch(console.error);
+        }
+      }, 100);
     } catch (error) {
       console.error("Error accessing camera:", error);
       alert("Could not access camera. Please try uploading a photo instead.");
     }
   };
 
+  // Stop camera and close modal
+  const stopCamera = () => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      setCameraStream(null);
+    }
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    setShowCameraModal(false);
+  };
+
+  // Capture photo from video stream
   const capturePhoto = () => {
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current;
       const video = videoRef.current;
+      
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
+      
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        ctx.drawImage(video, 0, 0);
-        const imageData = canvas.toDataURL('image/jpeg');
+        // Flip the image horizontally to match the mirrored video
+        ctx.scale(-1, 1);
+        ctx.drawImage(video, -canvas.width, 0);
+        
+        const imageData = canvas.toDataURL('image/jpeg', 0.9);
         setCapturedImage(imageData);
-        setShowCamera(false);
-        // Stop camera stream
-        const stream = video.srcObject as MediaStream;
-        stream?.getTracks().forEach(track => track.stop());
+        stopCamera();
       }
     }
   };
 
-  const retakePhoto = () => {
-    setCapturedImage(null);
-    startCamera();
-  };
-
+  // Handle camera method selection
   const handleCameraMethod = () => {
     setSelectedMethod("camera");
     startCamera();
   };
 
+  // Handle upload method selection
   const handleUploadMethod = () => {
     setSelectedMethod("upload");
     fileInputRef.current?.click();
   };
 
+  // Handle file selection
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -72,6 +100,13 @@ const Analysis = () => {
     }
   };
 
+  // Retake photo
+  const retakePhoto = () => {
+    setCapturedImage(null);
+    startCamera();
+  };
+
+  // Start analysis
   const handleAnalysis = () => {
     if (!capturedImage) {
       alert("Please capture or upload a photo first.");
@@ -83,6 +118,39 @@ const Analysis = () => {
       window.location.href = "/results";
     }, 3000);
   };
+
+  // Handle keyboard shortcuts
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (showCameraModal) {
+        if (event.key === 'Escape') {
+          stopCamera();
+        } else if (event.key === ' ' || event.key === 'Enter') {
+          event.preventDefault();
+          capturePhoto();
+        }
+      }
+    };
+
+    if (showCameraModal) {
+      document.addEventListener('keydown', handleKeyPress);
+      document.body.style.overflow = 'hidden';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyPress);
+      document.body.style.overflow = 'unset';
+    };
+  }, [showCameraModal]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop());
+      }
+    };
+  }, [cameraStream]);
 
   return (
     <div className="min-h-screen bg-background">
@@ -132,7 +200,7 @@ const Analysis = () => {
             </div>
 
             {/* Method Selection */}
-            {!showCamera && !capturedImage && (
+            {!capturedImage && (
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <Card 
                   className={`cursor-pointer transition-all duration-300 hover:shadow-hover ${
@@ -184,35 +252,6 @@ const Analysis = () => {
               </div>
             )}
 
-            {/* Camera Interface */}
-            {showCamera && (
-              <div className="mb-8">
-                <Card>
-                  <CardHeader className="text-center">
-                    <CardTitle>Position Your Face in the Camera</CardTitle>
-                  </CardHeader>
-                  <CardContent className="text-center">
-                    <div className="relative inline-block">
-                      <video
-                        ref={videoRef}
-                        autoPlay
-                        playsInline
-                        className="w-full max-w-md rounded-lg"
-                      />
-                    </div>
-                    <div className="mt-4 space-x-4">
-                      <Button onClick={capturePhoto} variant="hero">
-                        Capture Photo
-                      </Button>
-                      <Button onClick={() => setShowCamera(false)} variant="outline">
-                        Cancel
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-
             {/* Captured/Uploaded Image Preview */}
             {capturedImage && (
               <div className="mb-8">
@@ -224,9 +263,9 @@ const Analysis = () => {
                     <img
                       src={capturedImage}
                       alt="Captured face"
-                      className="w-full max-w-md rounded-lg mx-auto"
+                      className="w-full max-w-md rounded-lg mx-auto mb-4"
                     />
-                    <div className="mt-4 space-x-4">
+                    <div className="space-x-4">
                       {selectedMethod === "camera" ? (
                         <Button onClick={retakePhoto} variant="outline">
                           Retake Photo
@@ -350,6 +389,70 @@ const Analysis = () => {
           </div>
         )}
       </div>
+
+      {/* Camera Modal */}
+      {showCameraModal && (
+        <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
+          <div className="relative w-full h-full flex flex-col">
+            {/* Header */}
+            <div className="absolute top-0 left-0 right-0 z-10 p-4 bg-gradient-to-b from-black/50 to-transparent">
+              <div className="flex items-center justify-between text-white">
+                <h2 className="text-xl font-semibold">Take a Selfie</h2>
+                <Button
+                  onClick={stopCamera}
+                  variant="ghost"
+                  size="sm"
+                  className="text-white hover:bg-white/20 p-2"
+                >
+                  <X className="w-6 h-6" />
+                </Button>
+              </div>
+              <p className="text-white/80 text-sm mt-1">Position your face in the center and ensure good lighting</p>
+            </div>
+
+            {/* Video Container */}
+            <div className="flex-1 flex items-center justify-center p-4">
+              <div className="relative w-full max-w-lg aspect-[3/4]">
+                <video
+                  ref={videoRef}
+                  autoPlay
+                  playsInline
+                  muted
+                  className="w-full h-full object-cover rounded-2xl"
+                  style={{ transform: 'scaleX(-1)' }}
+                />
+                {/* Face guide overlay */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-64 h-80 border-2 border-white/30 rounded-full"></div>
+                </div>
+              </div>
+            </div>
+
+            {/* Controls */}
+            <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/50 to-transparent">
+              <div className="flex items-center justify-center space-x-8">
+                <Button
+                  onClick={stopCamera}
+                  variant="outline"
+                  className="bg-white/20 border-white/30 text-white hover:bg-white/30"
+                >
+                  Cancel
+                </Button>
+                <Button
+                  onClick={capturePhoto}
+                  className="bg-white text-black hover:bg-white/90 w-16 h-16 rounded-full p-0 relative"
+                >
+                  <div className="w-12 h-12 bg-black rounded-full"></div>
+                </Button>
+                <div className="w-20"></div> {/* Spacer for symmetry */}
+              </div>
+              <div className="text-center mt-4">
+                <p className="text-white/60 text-sm">Press SPACE or ENTER to capture • ESC to cancel</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
