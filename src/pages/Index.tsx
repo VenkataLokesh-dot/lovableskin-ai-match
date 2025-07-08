@@ -1,4 +1,4 @@
-import { ArrowRight, Sparkles, Shield, CheckCircle, Star } from "lucide-react";
+import { ArrowRight, Sparkles, Shield, CheckCircle, Star, Package, Scan } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -65,7 +65,18 @@ const Index = () => {
                 Analysis
               </Link>
             </nav>
-            <div className="flex items-center gap-4">
+            
+            {/* Mobile Navigation */}
+            <nav className="md:hidden flex items-center space-x-4">
+              <Link to="/products" className="text-foreground hover:text-accent-blue transition-colors">
+                <Package className="w-5 h-5" />
+              </Link>
+              <Link to="/analysis" className="text-foreground hover:text-accent-blue transition-colors">
+                <Scan className="w-5 h-5" />
+              </Link>
+            </nav>
+            
+            <div className="hidden md:flex items-center gap-4">
               <Link to="/products">
                 <Button variant="outline">
                   Browse Products

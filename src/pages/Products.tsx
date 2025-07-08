@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Filter, Star, ShoppingCart } from "lucide-react";
+import { Search, Filter, Star, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -196,8 +196,8 @@ const Products = () => {
               </CardContent>
               <CardFooter className="p-4 pt-0">
                 <Button className="w-full" variant="electric">
-                  <ShoppingCart className="w-4 h-4 mr-2" />
-                  Add to Cart
+                  <Eye className="w-4 h-4 mr-2" />
+                  View Product
                 </Button>
               </CardFooter>
             </Card>

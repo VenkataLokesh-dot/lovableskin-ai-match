@@ -1,4 +1,4 @@
-import { Star, CheckCircle, ArrowRight, ShoppingCart } from "lucide-react";
+import { Star, CheckCircle, ArrowRight, Eye, Lightbulb } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -203,13 +203,59 @@ const Results = () => {
                     </span>
                   </div>
                   <Button variant="electric" className="w-full">
-                    <ShoppingCart className="w-4 h-4 mr-2" />
-                    Add to Cart
+                    <Eye className="w-4 h-4 mr-2" />
+                    View Product
                   </Button>
                 </CardContent>
               </Card>
             ))}
           </div>
+        </div>
+
+        {/* Personal Tips */}
+        <div className="mb-12">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Lightbulb className="w-5 h-5 text-accent-mint" />
+                Personal Tips for Combination Skin
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-foreground mb-3 flex items-center gap-2">
+                    <ArrowRight className="w-4 h-4 text-accent-blue" />
+                    Daily Care Tips
+                  </h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li>• Use different products for different areas of your face</li>
+                    <li>• Apply oil-controlling products only to your T-zone</li>
+                    <li>• Use a hydrating moisturizer on dry areas (cheeks)</li>
+                    <li>• Don't over-cleanse - this can worsen oil production</li>
+                  </ul>
+                </div>
+                <div>
+                  <h4 className="font-medium text-foreground mb-3 flex items-center gap-2">
+                    <ArrowRight className="w-4 h-4 text-accent-mint" />
+                    Lifestyle Tips
+                  </h4>
+                  <ul className="space-y-2 text-sm text-muted-foreground">
+                    <li>• Stay hydrated - drink at least 8 glasses of water daily</li>
+                    <li>• Use a humidifier in dry environments</li>
+                    <li>• Avoid touching your face throughout the day</li>
+                    <li>• Change pillowcases 2-3 times per week</li>
+                  </ul>
+                </div>
+              </div>
+              <div className="mt-6 p-4 bg-accent-blue/5 rounded-lg">
+                <p className="text-sm text-muted-foreground">
+                  <strong>Pro Tip:</strong> Combination skin can change with seasons, stress, and hormones. 
+                  Monitor your skin regularly and adjust your routine as needed. Consider getting a re-analysis every 3-6 months.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Educational Content */}
