@@ -2,41 +2,69 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Skincare App Design System - All colors in HSL format */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Brand Colors */
+    --background: 210 20% 98%;
+    --foreground: 216 50% 12%;
+    
+    /* Deep Navy & Charcoal */
+    --primary: 220 50% 8%;  /* Deep navy #0A0E1A */
+    --primary-foreground: 210 20% 98%;
+    --primary-dark: 215 45% 10%; /* Charcoal #1A1D23 */
+    
+    /* Electric Blue & Mint Green Accents */
+    --accent-blue: 190 100% 50%; /* Electric blue #00D4FF */
+    --accent-mint: 152 100% 50%; /* Mint green #00FF88 */
+    --accent-blue-foreground: 220 50% 8%;
+    --accent-mint-foreground: 220 50% 8%;
+    
+    /* Neutral Grays */
+    --neutral-light: 210 14% 97%; /* #F8F9FA */
+    --neutral-medium: 210 14% 89%; /* #E9ECEF */
+    --neutral-dark: 210 9% 46%; /* #6C757D */
+    
+    /* Status Colors */
+    --success: 134 61% 41%; /* #28A745 */
+    --warning: 45 100% 51%; /* #FFC107 */
+    --destructive: 354 70% 54%; /* #DC3545 */
+    --success-foreground: 210 20% 98%;
+    --warning-foreground: 220 50% 8%;
+    --destructive-foreground: 210 20% 98%;
+    
+    /* Component Colors */
+    --card: 210 20% 98%;
+    --card-foreground: 216 50% 12%;
+    --popover: 210 20% 98%;
+    --popover-foreground: 216 50% 12%;
+    --secondary: 210 14% 97%;
+    --secondary-foreground: 216 50% 12%;
+    --muted: 210 14% 89%;
+    --muted-foreground: 210 9% 46%;
+    --accent: 190 100% 50%;
+    --accent-foreground: 220 50% 8%;
+    --border: 210 14% 89%;
+    --input: 210 14% 89%;
+    --ring: 190 100% 50%;
+    
+    /* Design System Tokens */
+    --gradient-hero: linear-gradient(135deg, hsl(220 50% 8%), hsl(215 45% 10%));
+    --gradient-accent: linear-gradient(135deg, hsl(190 100% 50%), hsl(152 100% 50%));
+    --gradient-card: linear-gradient(180deg, hsl(210 20% 98%), hsl(210 14% 97%));
+    --gradient-overlay: linear-gradient(180deg, rgba(10, 14, 26, 0.8), rgba(26, 29, 35, 0.9));
+    
+    /* Shadows */
+    --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-hover: 0 10px 15px -3px rgba(0, 212, 255, 0.1), 0 4px 6px -2px rgba(0, 212, 255, 0.05);
+    --shadow-glow: 0 0 20px rgba(0, 212, 255, 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
 
