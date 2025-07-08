@@ -1,245 +1,262 @@
-import { ArrowRight, Sparkles, Shield, CheckCircle, Star } from "lucide-react";
+
+import { ArrowRight, Camera, Sparkles, Users, Award, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import heroSkincare from "@/assets/hero-skincare.jpg";
+import heroImage from "@/assets/hero-skincare.jpg";
 
 const Index = () => {
-  const features = [
-    {
-      icon: Sparkles,
-      title: "Instant AI Analysis",
-      description: "Upload a selfie and get immediate skin analysis using advanced AI technology",
-      color: "text-accent-blue"
-    },
-    {
-      icon: CheckCircle,
-      title: "Personalized Recommendations",
-      description: "Receive curated product suggestions tailored to your unique skin type and concerns",
-      color: "text-accent-mint"
-    },
-    {
-      icon: Shield,
-      title: "Expert-Backed Science",
-      description: "Our analysis is based on dermatologist-approved algorithms and skincare science",
-      color: "text-success"
-    }
-  ];
-
-  const testimonials = [
-    {
-      name: "Sarah M.",
-      rating: 5,
-      text: "Finally found products that actually work for my combination skin. The AI analysis was spot-on!",
-      skinType: "Combination"
-    },
-    {
-      name: "David L.",
-      rating: 5,
-      text: "The recommendations cleared up my acne in just 3 weeks. Amazing technology!",
-      skinType: "Acne-Prone"
-    },
-    {
-      name: "Emily R.",
-      rating: 5,
-      text: "Love how personalized everything is. No more guessing what products to buy.",
-      skinType: "Sensitive"
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
+      <style>
+        {`
+          .no-scrollbar::-webkit-scrollbar {
+            display: none;
+          }
+          .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+        `}
+      </style>
+      
       {/* Navigation */}
-      <header className="bg-white/95 backdrop-blur-sm shadow-card border-b sticky top-0 z-50">
+      <nav className="bg-white/95 backdrop-blur-sm shadow-card sticky top-0 z-50 border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="text-2xl font-bold text-primary">
-              SkinAI
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center">
+              <span className="text-2xl font-bold text-primary">SkinAI</span>
             </div>
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link to="/products" className="text-foreground hover:text-accent-blue transition-colors">
+            <div className="hidden md:flex items-center space-x-8">
+              <Link to="/products" className="text-foreground hover:text-primary transition-colors">
                 Products
               </Link>
-              <Link to="/analysis" className="text-foreground hover:text-accent-blue transition-colors">
+              <Link to="/analysis" className="text-foreground hover:text-primary transition-colors">
                 Analysis
-              </Link>
-            </nav>
-            <div className="flex items-center gap-4">
-              <Link to="/products">
-                <Button variant="outline">
-                  Browse Products
-                </Button>
               </Link>
               <Link to="/analysis">
                 <Button variant="hero">
-                  Analyze My Skin
+                  Try Now
+                </Button>
+              </Link>
+            </div>
+            <div className="md:hidden flex items-center space-x-2">
+              <Link to="/products">
+                <Button variant="outline" size="icon">
+                  <Sparkles className="w-4 h-4" />
+                </Button>
+              </Link>
+              <Link to="/analysis">
+                <Button variant="hero" size="icon">
+                  <Camera className="w-4 h-4" />
                 </Button>
               </Link>
             </div>
           </div>
         </div>
-      </header>
+      </nav>
 
-      {/* Hero Section */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img
-            src={heroSkincare}
-            alt="Beautiful diverse people with healthy skin"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-overlay"></div>
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-32">
-          <div className="max-w-3xl">
-            <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6">
-              Discover Your Perfect{" "}
-              <span className="bg-gradient-accent bg-clip-text text-transparent">
+      <div className="no-scrollbar">
+        {/* Hero Section */}
+        <section className="relative min-h-screen flex items-center justify-center bg-gradient-hero">
+          <div className="absolute inset-0">
+            <img 
+              src={heroImage} 
+              alt="Beautiful skincare" 
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-overlay"></div>
+          </div>
+          
+          <div className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              Discover Your Perfect
+              <span className="block bg-gradient-accent bg-clip-text text-transparent">
                 Skincare Match
-              </span>{" "}
+              </span>
               in 30 Seconds
             </h1>
-            <p className="text-xl text-white/90 mb-8">
-              Get AI-powered skin analysis and personalized product recommendations 
-              that actually work for your unique skin type and concerns.
+            
+            <p className="text-xl md:text-2xl text-white/90 mb-8 max-w-2xl mx-auto">
+              AI-powered skin analysis that provides personalized product recommendations 
+              tailored to your unique skin type and concerns.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/analysis">
-                <Button variant="hero" size="lg" className="text-lg px-8 py-6">
+                <Button variant="hero" size="lg" className="px-8">
+                  <Camera className="mr-2 h-5 w-5" />
                   Analyze My Skin Now
-                  <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
               <Link to="/products">
-                <Button variant="glass" size="lg" className="text-lg px-8 py-6">
+                <Button variant="glass" size="lg" className="px-8">
                   Browse Products
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
             </div>
-            <div className="mt-8 flex items-center gap-6 text-white/80">
+            
+            <div className="flex items-center justify-center gap-8 mt-12 text-white/80">
               <div className="flex items-center gap-2">
-                <Shield className="w-5 h-5" />
-                <span>100% Secure</span>
+                <Shield className="h-5 w-5" />
+                <span className="text-sm">Secure & Private</span>
               </div>
               <div className="flex items-center gap-2">
-                <Sparkles className="w-5 h-5" />
-                <span>AI-Powered</span>
+                <Award className="h-5 w-5" />
+                <span className="text-sm">Dermatologist Approved</span>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle className="w-5 h-5" />
-                <span>Expert Approved</span>
+                <Users className="h-5 w-5" />
+                <span className="text-sm">50,000+ Users</span>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-neutral-light">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
-              How It Works
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Our advanced AI technology analyzes your skin to provide personalized 
-              recommendations that deliver real results.
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="text-center hover:shadow-hover transition-all duration-300 group">
-                <CardHeader>
-                  <div className={`w-16 h-16 rounded-full bg-gradient-accent flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                    <feature.icon className="w-8 h-8 text-white" />
+        {/* Features Section */}
+        <section className="py-20 bg-background">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                How It Works
+              </h2>
+              <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+                Our AI technology analyzes your skin to provide personalized recommendations
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              <Card className="group hover:shadow-hover transition-all duration-300 hover:-translate-y-2">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-accent-blue/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Camera className="h-8 w-8 text-accent-blue" />
                   </div>
-                  <CardTitle className="text-xl">{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{feature.description}</p>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">
+                    1. Take a Selfie
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Upload a clear photo of your face using our secure camera interface
+                  </p>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Social Proof */}
-      <section className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-foreground mb-4">
-              Join 50,000+ Users Who Found Their Perfect Routine
-            </h2>
-            <p className="text-xl text-muted-foreground">
-              See what our community is saying about their skincare transformations
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <Card key={index} className="hover:shadow-hover transition-all duration-300">
-                <CardHeader>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-1">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-current text-warning" />
-                      ))}
-                    </div>
-                    <Badge variant="outline">{testimonial.skinType}</Badge>
+              <Card className="group hover:shadow-hover transition-all duration-300 hover:-translate-y-2">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-accent-mint/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Sparkles className="h-8 w-8 text-accent-mint" />
                   </div>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">"{testimonial.text}"</p>
-                  <p className="font-medium text-foreground">- {testimonial.name}</p>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">
+                    2. AI Analysis
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Our advanced AI identifies your skin type, concerns, and specific needs
+                  </p>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Call to Action */}
-      <section className="py-20 bg-gradient-hero">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
-            Ready to Transform Your Skin?
-          </h2>
-          <p className="text-xl text-white/90 mb-8">
-            Start your personalized skincare journey today with our AI-powered analysis.
-            No more guessing, no more wasted money on products that don't work.
-          </p>
-          <Link to="/analysis">
-            <Button variant="hero" size="lg" className="text-lg px-12 py-6 bg-white text-primary hover:bg-white/90">
-              Get Your Free Analysis
-              <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-          </Link>
-          <p className="text-white/70 mt-4 text-sm">
-            Takes less than 2 minutes • 100% Free • No signup required
-          </p>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-primary py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-white mb-4">SkinAI</div>
-            <p className="text-white/70 mb-6">
-              AI-powered skincare analysis and recommendations
-            </p>
-            <div className="flex justify-center gap-8 text-white/70">
-              <Link to="/analysis" className="hover:text-white transition-colors">
-                Skin Analysis
-              </Link>
-              <Link to="/products" className="hover:text-white transition-colors">
-                Products
-              </Link>
+              <Card className="group hover:shadow-hover transition-all duration-300 hover:-translate-y-2">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-accent-blue/10 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <Award className="h-8 w-8 text-accent-blue" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-3">
+                    3. Get Recommendations
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Receive personalized product recommendations and skincare routine
+                  </p>
+                </CardContent>
+              </Card>
             </div>
           </div>
-        </div>
-      </footer>
+        </section>
+
+        {/* Stats Section */}
+        <section className="py-20 bg-gradient-card">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Trusted by Thousands
+              </h2>
+              <p className="text-xl text-muted-foreground">
+                Join the community of people who found their perfect skincare routine
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-8 text-center">
+              <div>
+                <div className="text-4xl font-bold text-accent-blue mb-2">50,000+</div>
+                <div className="text-muted-foreground">Happy Users</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-accent-mint mb-2">95%</div>
+                <div className="text-muted-foreground">Accuracy Rate</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-accent-blue mb-2">30 sec</div>
+                <div className="text-muted-foreground">Analysis Time</div>
+              </div>
+              <div>
+                <div className="text-4xl font-bold text-accent-mint mb-2">500+</div>
+                <div className="text-muted-foreground">Products</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20 bg-background">
+          <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+              Ready to Transform Your Skin?
+            </h2>
+            <p className="text-xl text-muted-foreground mb-8">
+              Start your personalized skincare journey today with our AI-powered analysis
+            </p>
+            <Link to="/analysis">
+              <Button variant="hero" size="lg" className="px-12">
+                Get Started - It's Free
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="bg-primary-dark text-white py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid md:grid-cols-3 gap-8">
+              <div>
+                <h3 className="text-2xl font-bold mb-4">SkinAI</h3>
+                <p className="text-white/80">
+                  Your trusted partner for personalized skincare recommendations powered by AI.
+                </p>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-4">Quick Links</h4>
+                <div className="space-y-2">
+                  <Link to="/analysis" className="block text-white/80 hover:text-white transition-colors">
+                    Skin Analysis
+                  </Link>
+                  <Link to="/products" className="block text-white/80 hover:text-white transition-colors">
+                    Products
+                  </Link>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-semibold mb-4">Privacy & Security</h4>
+                <p className="text-white/80 text-sm">
+                  Your photos are processed securely and never stored on our servers.
+                </p>
+              </div>
+            </div>
+            <div className="border-t border-white/20 mt-8 pt-8 text-center text-white/60">
+              <p>&copy; 2024 SkinAI. All rights reserved.</p>
+            </div>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };
