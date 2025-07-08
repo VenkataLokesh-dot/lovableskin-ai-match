@@ -1,5 +1,4 @@
-
-import { Star, CheckCircle, ArrowRight, Eye, Lightbulb } from "lucide-react";
+import { Star, CheckCircle, ArrowRight, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -61,14 +60,6 @@ const analysisResults = {
         whyRecommended: "Non-comedogenic formula ideal for combination skin"
       }
     }
-  ],
-  personalTips: [
-    "Use a gentle cleanser twice daily to avoid over-stripping your skin",
-    "Apply moisturizer to dry areas (cheeks) while using lighter products on your T-zone",
-    "Always use sunscreen, even indoors, to prevent premature aging",
-    "Introduce new products gradually to avoid irritation",
-    "Stay hydrated and maintain a balanced diet for healthy skin from within",
-    "Avoid touching your face throughout the day to prevent bacteria transfer"
   ]
 };
 
@@ -83,20 +74,11 @@ const Results = () => {
               SkinAI
             </Link>
             <div className="flex items-center gap-4">
-              <div className="hidden md:block">
-                <Link to="/products">
-                  <Button variant="outline">
-                    Browse All Products
-                  </Button>
-                </Link>
-              </div>
-              <div className="md:hidden">
-                <Link to="/products">
-                  <Button variant="outline" size="icon">
-                    <Eye className="w-4 h-4" />
-                  </Button>
-                </Link>
-              </div>
+              <Link to="/products">
+                <Button variant="outline">
+                  Browse All Products
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -171,30 +153,6 @@ const Results = () => {
           </Card>
         </div>
 
-        {/* Personal Tips */}
-        <div className="mb-12">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="w-5 h-5 text-accent-mint" />
-                Personal Tips for {analysisResults.skinType} Skin
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid md:grid-cols-2 gap-4">
-                {analysisResults.personalTips.map((tip, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-accent-mint/10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-xs font-bold text-accent-mint">{index + 1}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{tip}</p>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
         {/* Personalized Routine */}
         <div className="mb-12">
           <div className="text-center mb-8">
@@ -245,8 +203,8 @@ const Results = () => {
                     </span>
                   </div>
                   <Button variant="electric" className="w-full">
-                    <Eye className="w-4 h-4 mr-2" />
-                    View Product
+                    <ShoppingCart className="w-4 h-4 mr-2" />
+                    Add to Cart
                   </Button>
                 </CardContent>
               </Card>
@@ -313,14 +271,12 @@ const Results = () => {
             Ready to Start Your Journey?
           </h2>
           <p className="text-muted-foreground mb-6">
-            Explore these recommended products and start seeing results in just a few weeks
+            Get all your recommended products and start seeing results in just a few weeks
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/products">
-              <Button variant="hero" size="lg">
-                Browse Recommended Products
-              </Button>
-            </Link>
+            <Button variant="hero" size="lg">
+              Shop Complete Routine - $143
+            </Button>
             <Link to="/analysis">
               <Button variant="outline" size="lg">
                 Analyze Again

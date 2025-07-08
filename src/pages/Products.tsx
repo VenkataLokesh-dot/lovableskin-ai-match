@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { Search, Filter, Star, Eye, Upload } from "lucide-react";
+import { Search, Filter, Star, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
@@ -105,20 +104,11 @@ const Products = () => {
               SkinAI
             </Link>
             <div className="flex items-center gap-4">
-              <div className="hidden md:block">
-                <Link to="/analysis">
-                  <Button variant="hero" size="lg">
-                    Analyze Your Skin
-                  </Button>
-                </Link>
-              </div>
-              <div className="md:hidden">
-                <Link to="/analysis">
-                  <Button variant="hero" size="icon">
-                    <Search className="w-4 h-4" />
-                  </Button>
-                </Link>
-              </div>
+              <Link to="/analysis">
+                <Button variant="hero" size="lg">
+                  Analyze Your Skin
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -206,8 +196,8 @@ const Products = () => {
               </CardContent>
               <CardFooter className="p-4 pt-0">
                 <Button className="w-full" variant="electric">
-                  <Eye className="w-4 h-4 mr-2" />
-                  View Product
+                  <ShoppingCart className="w-4 h-4 mr-2" />
+                  Add to Cart
                 </Button>
               </CardFooter>
             </Card>
