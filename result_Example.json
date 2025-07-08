@@ -1,0 +1,81 @@
+{
+  "analysis_id": "skin_analysis_22222",
+  "timestamp": "2025-07-09T10:30:00Z",
+  "skin_profile": {
+    "type": "combination_oily",
+    "concerns": ["acne", "enlarged_pores", "oiliness"],
+    "skin_tone": "medium",
+    "age_range": "20-30"
+  },
+  "immediate_concerns": [
+    {
+      "issue": "active_acne",
+      "urgency": "high",
+      "recommendation": "Use salicylic acid cleanser twice daily"
+    },
+    {
+      "issue": "excess_oil",
+      "urgency": "medium",
+      "recommendation": "Apply niacinamide serum in morning"
+    }
+  ],
+  "skincare_routine": {
+    "morning": [
+      {
+        "step": 1,
+        "product_type": "cleanser",
+        "ingredients": ["salicylic_acid"],
+        "purpose": "remove_oil_and_debris"
+      },
+      {
+        "step": 2,
+        "product_type": "serum",
+        "ingredients": ["niacinamide"],
+        "purpose": "control_oil_production"
+      },
+      {
+        "step": 3,
+        "product_type": "moisturizer",
+        "ingredients": ["hyaluronic_acid"],
+        "purpose": "hydrate_without_clogging"
+      },
+      {
+        "step": 4,
+        "product_type": "sunscreen",
+        "ingredients": ["zinc_oxide"],
+        "purpose": "protect_from_uv"
+      }
+    ],
+    "evening": [
+      {
+        "step": 1,
+        "product_type": "cleanser",
+        "ingredients": ["salicylic_acid"],
+        "purpose": "deep_clean_pores"
+      },
+      {
+        "step": 2,
+        "product_type": "treatment",
+        "ingredients": ["retinol"],
+        "purpose": "prevent_acne_and_aging"
+      },
+      {
+        "step": 3,
+        "product_type": "moisturizer",
+        "ingredients": ["ceramides"],
+        "purpose": "repair_skin_barrier"
+      }
+    ]
+  },
+  "product_filters": {
+    "avoid_ingredients": ["alcohol", "fragrances", "comedogenic_oils"],
+    "preferred_ingredients": ["salicylic_acid", "niacinamide", "hyaluronic_acid", "retinol"],
+    "skin_type_tags": ["oily", "acne_prone", "combination"],
+    "price_range": "budget_to_mid_range"
+  },
+  "progress_tracking": {
+    "check_in_days": 14,
+    "expected_improvements": ["reduced_oiliness", "fewer_breakouts"],
+    "warning_signs": ["increased_irritation", "excessive_dryness"]
+  }
+}

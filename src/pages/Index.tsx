@@ -10,7 +10,7 @@ const Index = () => {
     {
       icon: Sparkles,
       title: "Instant AI Analysis",
-      description: "Upload a selfie and get immediate skin analysis using advanced AI technology",
+      description: "Upload a selfie and get immediate skin analysis using our advanced technology",
       color: "text-accent-blue"
     },
     {
@@ -154,7 +154,7 @@ const Index = () => {
               How It Works
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Our advanced AI technology analyzes your skin to provide personalized 
+              Our advanced technology analyzes your skin to provide personalized 
               recommendations that deliver real results.
             </p>
           </div>

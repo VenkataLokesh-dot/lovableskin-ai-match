@@ -1,16 +1,21 @@
 import { useState, useRef, useEffect } from "react";
-import { Camera, Upload, Check, Shield, Sparkles, X } from "lucide-react";
+import { Camera, Upload, Check, Shield, Sparkles, X, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import analysisMockup from "@/assets/analysis-mockup.jpg";
+import { analyzeSkinWithOpenAI, validateOpenAIConfig, type SkinAnalysisResult } from "@/services/openai";
 
 const Analysis = () => {
+  const navigate = useNavigate();
   const [selectedMethod, setSelectedMethod] = useState<"camera" | "upload" | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [showCameraModal, setShowCameraModal] = useState(false);
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null);
+  const [analysisProgress, setAnalysisProgress] = useState<string>("");
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -92,6 +97,19 @@ const Analysis = () => {
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file.');
+        return;
+      }
+      
+      // Validate file size (5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size too large. Please select an image smaller than 5MB.');
+        return;
+      }
+      
+      setUploadedFile(file);
       const reader = new FileReader();
       reader.onload = (e) => {
         setCapturedImage(e.target?.result as string);
@@ -103,20 +121,68 @@ const Analysis = () => {
   // Retake photo
   const retakePhoto = () => {
     setCapturedImage(null);
+    setUploadedFile(null);
+    setAnalysisError(null);
     startCamera();
   };
 
-  // Start analysis
-  const handleAnalysis = () => {
+  // Start analysis with OpenAI
+  const handleAnalysis = async () => {
     if (!capturedImage) {
       alert("Please capture or upload a photo first.");
       return;
     }
+
+    // Validate OpenAI configuration
+    if (!validateOpenAIConfig()) {
+      setAnalysisError("Analysis service not configured. Please check your configuration.");
+      return;
+    }
+
     setIsAnalyzing(true);
-    // Simulate analysis time
-    setTimeout(() => {
-      window.location.href = "/results";
-    }, 3000);
+    setAnalysisError(null);
+    setAnalysisProgress("Preparing image for analysis...");
+
+    try {
+      let imageSource: File | HTMLCanvasElement;
+      
+      if (selectedMethod === "upload" && uploadedFile) {
+        imageSource = uploadedFile;
+        setAnalysisProgress("Analyzing uploaded image with AI...");
+      } else if (selectedMethod === "camera" && canvasRef.current) {
+        imageSource = canvasRef.current;
+        setAnalysisProgress("Analyzing captured photo with AI...");
+      } else {
+        throw new Error("No valid image source found");
+      }
+
+      setAnalysisProgress("Analyzing your skin...");
+      
+      // Perform AI analysis
+      const analysisResult: SkinAnalysisResult = await analyzeSkinWithOpenAI(imageSource);
+      
+      setAnalysisProgress("Analysis complete! Preparing results...");
+      
+      // Store results in sessionStorage for the Results page
+      sessionStorage.setItem('skinAnalysisResult', JSON.stringify(analysisResult));
+      sessionStorage.setItem('analyzedImage', capturedImage);
+      
+      // Navigate to results page
+      setTimeout(() => {
+        navigate('/results');
+      }, 1000);
+      
+    } catch (error) {
+      console.error('Analysis failed:', error);
+      setIsAnalyzing(false);
+      setAnalysisProgress("");
+      
+      if (error instanceof Error) {
+        setAnalysisError(error.message);
+      } else {
+        setAnalysisError('An unexpected error occurred during analysis. Please try again.');
+      }
+    }
   };
 
   // Handle keyboard shortcuts
@@ -271,7 +337,12 @@ const Analysis = () => {
                           Retake Photo
                         </Button>
                       ) : (
-                        <Button onClick={handleUploadMethod} variant="outline">
+                        <Button onClick={() => {
+                          setCapturedImage(null);
+                          setUploadedFile(null);
+                          setAnalysisError(null);
+                          handleUploadMethod();
+                        }} variant="outline">
                           Choose Different Photo
                         </Button>
                       )}
@@ -340,16 +411,33 @@ const Analysis = () => {
               </div>
             </div>
 
+            {/* Error Display */}
+            {analysisError && (
+              <div className="mb-6">
+                <Card className="border-red-200 bg-red-50">
+                  <CardContent className="pt-6">
+                    <div className="flex items-center gap-3 text-red-700">
+                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium">Analysis Failed</p>
+                        <p className="text-sm text-red-600 mt-1">{analysisError}</p>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
+
             {/* Start Analysis Button */}
             <div className="text-center">
               <Button
                 variant="hero"
                 size="lg"
-                disabled={!capturedImage}
+                disabled={!capturedImage || isAnalyzing}
                 onClick={handleAnalysis}
                 className="px-12"
               >
-                Start Analysis
+                {isAnalyzing ? "Analyzing..." : "Start Analysis"}
               </Button>
               {!capturedImage && (
                 <p className="text-sm text-muted-foreground mt-2">
@@ -376,16 +464,27 @@ const Analysis = () => {
               Analyzing Your Skin...
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Our AI is examining your photo to identify your skin type and concerns
+              {analysisProgress || "Our AI is examining your photo to identify your skin type and concerns"}
             </p>
             <div className="max-w-md mx-auto">
               <div className="h-2 bg-neutral-medium rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-accent rounded-full animate-pulse" style={{ width: "75%" }}></div>
+                <div className="h-full bg-gradient-accent rounded-full animate-pulse transition-all duration-1000" style={{ width: analysisProgress.includes("complete") ? "100%" : analysisProgress.includes("Processing") ? "75%" : analysisProgress.includes("Analyzing") ? "50%" : "25%" }}></div>
               </div>
               <p className="text-sm text-muted-foreground mt-2">
-                Processing... Please wait a moment
+                {analysisProgress.includes("complete") ? "Redirecting to results..." : "Processing... Please wait a moment"}
               </p>
             </div>
+            
+            {/* Show captured image during analysis */}
+            {capturedImage && (
+              <div className="mt-8">
+                <img
+                  src={capturedImage}
+                  alt="Analyzing"
+                  className="w-32 h-32 rounded-full mx-auto object-cover border-4 border-white shadow-lg"
+                />
+              </div>
+            )}
           </div>
         )}
       </div>
